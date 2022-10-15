@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>JavaScript Event</h1>
+
+        <button name="button 01"    onclick="btn01Event(event)">Btn 01</button>
+        <button name="button 02"    onclick="alert('hello world')">Btn 02</button>
+        <button name="button 03"    id="btn03">Btn 03</button>
+        <button name="button 04"    id="btn04">Btn 04</button>
+        <button name="button 05"    id="btn05">Btn 05</button>
+    </div>
+
+    <script type="text/javascript">
+       /*
+       // 인라인 함수
+        function btn01Event(evt){
+            console.log(this);  //window
+        }
+
+        // 표준 이벤트 방식
+        document.getElementById('btn03').addEventListener('click',function(evt){
+            console.log(evt.target);    // btn03
+            console.log(this) // 이벤트를 발생시킨 대상이 this가 됨. btn03
+        });
+        */
+
+        class MyEventClass{
+            constructor(){
+                this.name = 'NolBu';
+
+                //bind() => this를 지정한 객체로 변경해서 새로운 메서드를 반환함
+                // this.btn03Evt =
+
+                document.getElementById('btn03').addEventListener('click',function(evt){
+                    console.log(this)
+                    console.log(this.name) // Nolbu 출력되지 않고 btn03의 name이 찍힘
+                });
+          
+                // this -> 버튼
+                //document.getElementById('btn04').addEventListener('click', this.btn04Event)
+
+                // 여기서 this는 MyEventClass 가리킴
+                // this를 자기 class로 바인드 시킴
+                this.btn04Evt = this.btn04Event.bind(this);
+
+                // this -> class
+                // btn04Evt 함수 () 안붙임 -> 붙이면 즉시 실행이 되버리기 때문에
+                // btn04Evt이라는 값으로 전달함
+                document.getElementById('btn04').addEventListener('click', this.btn04Evt)
+
+                // evt 객체 외에 다른 파라미터 전달하는 방법
+                // Arrow 함수의 경우 this 는 선언된 객체의 this를 따른다.
+                document.getElementById('btn05').addEventListener('click', (evt)=>{
+                    this.btn05Event(evt, 'orange');
+                })
+            }
+
+            btn04Event(evt){
+                console.log(this);
+                // addEventListener의 콜백함수가 evt라는 파라미터를 자동으로 넘겨줌
+                console.log(evt);
+            }
+
+            btn05Event(evt, color){
+                console.log(this);
+                evt.target.style.background = color;
+
+            }
+        }
+
+        new MyEventClass();
+
+    </script>
+</body>
+</html>
